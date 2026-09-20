@@ -14,6 +14,14 @@ export async function exportDocumentToPdf(elementId: string, fileName: string): 
     return false;
   }
 
+  // Ensure Google Font Tinos is loaded even in environments like v0.dev or Next.js where index.html is ignored
+  if (typeof document !== 'undefined' && !document.querySelector('link[href*="family=Tinos"]')) {
+    const fontLink = document.createElement('link');
+    fontLink.rel = 'stylesheet';
+    fontLink.href = 'https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap';
+    document.head.appendChild(fontLink);
+  }
+
   // Create an off-screen container clone with exact A4 dimensions in pixels (794 x 1123 px for 96 DPI)
   // to avoid parent CSS transforms like scale(0.45) affecting html2canvas capture
   const clone = element.cloneNode(true) as HTMLElement;
@@ -23,7 +31,9 @@ export async function exportDocumentToPdf(elementId: string, fileName: string): 
   clone.style.top = '0';
   clone.style.left = '0';
   clone.style.width = '794px';
+  clone.style.maxWidth = '794px';
   clone.style.minHeight = '1123px';
+  clone.style.boxSizing = 'border-box';
   clone.style.margin = '0';
   clone.style.zIndex = '-99999';
   clone.style.backgroundColor = '#ffffff';
@@ -32,8 +42,14 @@ export async function exportDocumentToPdf(elementId: string, fileName: string): 
   document.body.appendChild(clone);
 
   try {
-    // Wait for fonts to be ready
+    // Wait for fonts to be completely ready and loaded
     if (document.fonts) {
+      try {
+        await document.fonts.load('14pt Tinos');
+        await document.fonts.load('bold 14pt Tinos');
+      } catch {
+        // Fallback gracefully if offline
+      }
       await document.fonts.ready;
     }
 
@@ -56,7 +72,18 @@ export async function exportDocumentToPdf(elementId: string, fileName: string): 
       compress: true,
     });
 
-    pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+    const imgWidth = 210;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    if (imgHeight <= 297) {
+      pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight, undefined, 'FAST');
+    } else {
+      // Scale down proportionally to fit exactly in one A4 page without distortion
+      const scaledWidth = (297 * canvas.width) / canvas.height;
+      const xOffset = (210 - scaledWidth) / 2;
+      pdf.addImage(imgData, 'JPEG', xOffset, 0, scaledWidth, 297, undefined, 'FAST');
+    }
+
     const safeFileName = fileName.endsWith('.pdf') ? fileName : `${fileName}.pdf`;
     pdf.save(safeFileName);
 

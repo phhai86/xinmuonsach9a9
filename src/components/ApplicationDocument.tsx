@@ -27,6 +27,20 @@ export const ApplicationDocument = forwardRef<HTMLDivElement, ApplicationDocumen
           color: '#000000',
         }}
       >
+        {/* Self-contained font & layout styles so it renders identically in AI Studio, v0.dev, Next.js, or any host */}
+        <style dangerouslySetInnerHTML={{ __html: `
+          @import url('https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+          #printable-application-doc {
+            font-family: 'Tinos', 'Times New Roman', Times, serif !important;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+          }
+          #printable-application-doc * {
+            box-sizing: border-box;
+          }
+        `}} />
+
         {/* Main Content Area */}
         <div className="space-y-4">
           {/* Header Quốc hiệu - Tiêu ngữ */}
