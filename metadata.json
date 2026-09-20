@@ -1,0 +1,6 @@
+{
+  "name": "Đơn Mượn Sách Giáo Khoa Lớp 9A9 - THPT Chuyên Trần Đại Nghĩa",
+  "description": "Cổng điền đơn và quản lý mượn sách giáo khoa Lớp 9A9 Thư viện THPT Chuyên Trần Đại Nghĩa: tạo đơn mới, chọn SGK Lớp 9, lưu tạm trên Firebase, xuất file PDF A4 chuẩn mẫu có mã eForm ở footer, chụp ảnh/upload đơn đã ký và quản trị duyệt đơn.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

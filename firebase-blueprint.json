@@ -1,0 +1,31 @@
+{
+  "entities": {
+    "loan_applications": {
+      "title": "LoanApplication",
+      "description": "Đơn xin mượn sách giáo khoa",
+      "type": "object",
+      "properties": {
+        "code": { "type": "string", "description": "Mã đơn ví dụ SGK-2026-XXXX" },
+        "fullName": { "type": "string", "description": "Họ và tên học sinh" },
+        "className": { "type": "string", "description": "Lớp" },
+        "email": { "type": "string", "description": "Email liên hệ" },
+        "homeroomTeacherClass": { "type": "string", "description": "Giáo viên chủ nhiệm lớp" },
+        "schoolYear": { "type": "string", "description": "Năm học" },
+        "bookGrade": { "type": "string", "description": "Mượn sách giáo khoa lớp mấy" },
+        "bookQuantity": { "type": "string", "description": "Số lượng cuốn" },
+        "bookItems": { "type": "array", "description": "Danh sách 10 đầu sách mượn" },
+        "city": { "type": "string", "description": "Nơi làm đơn" },
+        "dateDay": { "type": "string", "description": "Ngày" },
+        "dateMonth": { "type": "string", "description": "Tháng" },
+        "dateYear": { "type": "string", "description": "Năm" },
+        "status": { "type": "string", "description": "Trạng thái: draft, submitted, completed" },
+        "signedFile": { "type": "string", "description": "Base64 hoặc URL file đã ký/chụp ảnh" },
+        "signedFileName": { "type": "string", "description": "Tên file upload" },
+        "signedUploadedAt": { "type": "string", "description": "Thời gian upload bản đã ký" },
+        "createdAt": { "type": "string", "description": "Thời gian tạo" },
+        "updatedAt": { "type": "string", "description": "Thời gian cập nhật" }
+      },
+      "required": ["code", "fullName", "className", "email"]
+    }
+  }
+}
